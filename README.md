@@ -67,7 +67,7 @@ class DinnerSerializer(serializers.ModelSerializer):
         fields = ['id', 'table_number', 'total_cost', 'status', 'created_at', 'formed_at', 'completed_at', 'creator', 'moderator']
 ```
 
-Приступим к выполнению задачию. Первым делом, добавим в модель Dinner новое поле - qr. Поле будет текстовым, так как генерироваться QR-код будет в формате [base64](https://developer.mozilla.org/en-US/docs/Glossary/Base64). Кроме того, наше поле может быть пустым как в форме, так и в базе данных, например, если заказ находится в статусе черновика или только сформирован, но еще не одобрен менеджером. Учитывая это, добавляем новое поле:
+Приступим к выполнению задачи. Первым делом, добавим в модель Dinner новое поле - qr. Поле будет текстовым, так как генерироваться QR-код будет в формате [base64](https://developer.mozilla.org/en-US/docs/Glossary/Base64). Кроме того, наше поле может быть пустым в базе данных, например, если заказ находится в статусе черновика или только сформирован, но еще не одобрен менеджером. Учитывая это, добавляем новое поле:
 ```python
 qr = models.TextField(null=True, blank=True)
 ```
@@ -211,7 +211,7 @@ def put_moderator(self, request, pk):
 
 Теперь мы умеем генерировать qr-код на бэкенде, и он будет приходить к нам в теле ответа при запросе одного или нескольких заказов.<br>
 
-На фронтэнде наша команда использует React. Заказы конкретного пользователя помещены вот в такую функциональную компоненту
+На фронтенде наша команда использует React. Заказы конкретного пользователя помещены вот в такую функциональную компоненту
 
 ```typescript
 import React from 'react';
@@ -238,7 +238,7 @@ const getStatusText = (status: 'f' | 'c' | 'r') => {
   }
 };
 
-const DinnerCard: React.FC<DinnerCardProps> = ({ id, tableNumber, status, formedAt, totalCost, qr, onClick }) => {
+const DinnerCard: React.FC<DinnerCardProps> = ({ id, tableNumber, status, formedAt, totalCost, onClick }) => {
   return (
     <div className={`dinner-card ${status}`} onClick={onClick}>
       <div className="dinner-info">
